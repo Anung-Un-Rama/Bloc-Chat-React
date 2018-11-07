@@ -20,11 +20,11 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-        </header>
-        <main>
-          <RoomList firebase={firebase} />
-        </main>
+        <div id="sidbar">
+          <RoomList firebase={firebase}
+                    createRoom={this.createRoom}
+          />
+        </div>
       </div>
     );
   }
