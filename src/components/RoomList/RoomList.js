@@ -69,5 +69,3 @@ class RoomList extends Component {
 }
 
 export default RoomList;
-
-//onClick(e) => this.setActiveRoom(e)
