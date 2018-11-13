@@ -24,24 +24,28 @@ class MessageList extends Component {
 /*
     activeMessages(activeRoom) {
 
+    }*/
+
+    createMessage(e){
+      e.preventDefault();
+      this.messageRef.push({
+        username: this.props.user ? this.props.user.displayName : "Guest",
+        content: this.state.newMessage,
+        sentAt: Date(),
+        roomId: this.props.activeRoom.key
+      });
+      this.setState({ newMessage: ''});
     }
 
-    createMessage(newMessag){
+    handleMessageInput(e) {
+        this.setState({ newMessage: e.target.value });
+      }
 
-    }
 
-    getDate() {
+    /*deleteMessage(){
+      this.messageRef.child(activeRoom.key).remove();
+    }*/
 
-    }
-
-    getTime() {
-
-    }
-
-    handleChange(e) {
-
-    }
-*/
 
   render() {
     let messages = null;
@@ -56,7 +60,7 @@ class MessageList extends Component {
                               </tr>
                             )
     }
-    
+
     return(
       <div>
         <header className="chatroom-header">
@@ -76,6 +80,21 @@ class MessageList extends Component {
               {messages}
             </tbody>
           </table>
+
+          <form className="create-message" onSubmit={ (e) => this.createMessage(e) } >
+
+            <input id="messageSubmit"
+              text="text"
+              value={this.state.newMessage}
+              onChange={(e) => this.handleMessageInput(e)}
+              placeholder="Write a Message" />
+
+            <input type="submit"
+              value="Write Message"
+            />
+
+          </form>
+
         </div>
       </div>
     );

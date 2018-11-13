@@ -24,7 +24,7 @@ class RoomList extends Component {
     this.roomsRef.push({
       name: this.state.newRoom,
       date: Date(),
-      user: this.props.user ? this.props.user.displayName : "Bubble Buddy",
+      user: this.props.user ? this.props.user.displayName : "",
     });
     this.setState({ newRoom: ' ' });
   }
@@ -53,16 +53,21 @@ class RoomList extends Component {
           )}
         </ul>
         <form className="create-room" onSubmit={ (e) => this.createRoom(e) }>
+
           <input  id="formSubmit"
             text="text"
             value={ this.state.newRoom }
             onChange={(e) => this.handleCreateRoom(e)}
             placeholder="Create Room" />
+
           <input  type="submit"
             value="Add"
             name="newRoomName"
            />
+
         </form>
+
+
       </div>
     )
   }
