@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+var moment = require('moment');
+
 
 class MessageList extends Component {
   constructor(props) {
@@ -18,20 +20,21 @@ class MessageList extends Component {
       message.key = snapshot.key;
       this.setState({ allMessages: this.state.allMessages.concat( message ) })
     });
+    this.messageRef.on('child_removed', snapshot => {
+      const allMessages = this.state.allMessages.filter((message) => {
+        return message.key !== snapshot.key
+      });
+    this.setState({allMessages})
+    });
   }
 
-
-/*
-    activeMessages(activeRoom) {
-
-    }*/
 
     createMessage(e){
       e.preventDefault();
       this.messageRef.push({
-        username: this.props.user ? this.props.user.displayName : "Guest",
+        username: (this.props.user ? this.props.user.displayName : "Guest"),
         content: this.state.newMessage,
-        sentAt: Date(),
+        sentAt: this.props.firebase.database.ServerValue.TIMESTAMP,
         roomId: this.props.activeRoom.key
       });
       this.setState({ newMessage: ''});
@@ -42,9 +45,9 @@ class MessageList extends Component {
       }
 
 
-    /*deleteMessage(){
+    deleteMessage(activeRoom){
       this.messageRef.child(activeRoom.key).remove();
-    }*/
+    }
 
 
   render() {
@@ -56,7 +59,8 @@ class MessageList extends Component {
                               <tr>
                                 <td>{message.username}</td>
                                 <td>{message.content}</td>
-                                <td>{message.sentAt}</td>
+                                <td>{moment(message.sentAt).format('MMMM Do YYYY, h:mm:ss a')}</td>
+                                <button className="delete-message" type="button" onClick={(e) => this.deleteMessage(message)}>Delete</button>
                               </tr>
                             )
     }
@@ -100,9 +104,6 @@ class MessageList extends Component {
     );
   }
 }
-
-
-
 
 
 export default MessageList;

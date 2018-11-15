@@ -17,6 +17,13 @@ class RoomList extends Component {
         this.props.handleRoomSelect(room);
       }
     });
+
+    this.roomsRef.on('child_removed', snapshot => {
+      const rooms = this.state.rooms.filter((room) =>{
+        return room.key !== snapshot.key
+      });
+      this.setState({rooms})
+    });
   }
 
   createRoom(e) {
@@ -33,9 +40,9 @@ class RoomList extends Component {
     this.setState({ newRoom: e.target.value });
   }
 
-  /*deleteRoom (e){
+  deleteRoom (room){
     this.roomsRef.child(room.key).remove();
-  }*/
+  }
 
 
   render() {
@@ -49,6 +56,7 @@ class RoomList extends Component {
               onClick={ () => this.props.setActiveRoom(room) }
               >
               {room.name}
+              <button className="delete-room" type="button" onClick={(e) => this.deleteRoom(room)}>Delete Room</button>
             </li>
           )}
         </ul>
@@ -56,6 +64,7 @@ class RoomList extends Component {
 
           <input  id="formSubmit"
             text="text"
+
             value={ this.state.newRoom }
             onChange={(e) => this.handleCreateRoom(e)}
             placeholder="Create Room" />
